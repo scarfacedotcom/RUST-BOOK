@@ -1,9 +1,10 @@
 fn main() {
     println!("Hello, world!");
-
-    another_function();
+    my_fn("This is my function");
+    let str = "Function call with a variable";
+    my_fn(str);
 }
 
-fn another_function() {
-    println!("Another function");
+fn my_fn(s: &str) {
+    println!("{s}");
 }
