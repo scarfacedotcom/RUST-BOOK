@@ -1,16 +1,8 @@
 use std::io;
 
-fn convert_temperature(value: f64, to_celsius: bool) -> f64 {
-    if to_celsius {
-        (value - 32.0) * 5.0 / 9.0 // Fahrenheit to Celsius
-    } else {
-        value * 9.0 / 5.0 + 32.0 // Celsius to Fahrenheit
-    }
-}
-
 fn main() {
     loop {
-        println!("Temperature Converter");
+        println!("Simple Temperature Converter");
         println!("1. Convert Celsius to Fahrenheit");
         println!("2. Convert Fahrenheit to Celsius");
         println!("3. Exit");
@@ -22,14 +14,16 @@ fn main() {
 
         match choice.trim() {
             "1" => {
-                let value = get_temperature_input("Celsius");
-                let result = convert_temperature(value, false);
-                println!("{:.2} °C is equal to {:.2} °F", value, result);
+                println!("Enter temperature in Celsius:");
+                let celsius = read_number();
+                let fahrenheit = celsius * 9.0 / 5.0 + 32.0;
+                println!("{:.2} °C is {:.2} °F", celsius, fahrenheit);
             }
             "2" => {
-                let value = get_temperature_input("Fahrenheit");
-                let result = convert_temperature(value, true);
-                println!("{:.2} °F is equal to {:.2} °C", value, result);
+                println!("Enter temperature in Fahrenheit:");
+                let fahrenheit = read_number();
+                let celsius = (fahrenheit - 32.0) * 5.0 / 9.0;
+                println!("{:.2} °F is {:.2} °C", fahrenheit, celsius);
             }
             "3" => {
                 println!("Goodbye!");
@@ -40,19 +34,10 @@ fn main() {
     }
 }
 
-fn get_temperature_input(unit: &str) -> f64 {
-    println!("Enter the temperature in {}:", unit);
-
+fn read_number() -> f64 {
     let mut input = String::new();
     io::stdin()
         .read_line(&mut input)
         .expect("Failed to read input");
-
-    match input.trim().parse() {
-        Ok(num) => num,
-        Err(_) => {
-            println!("Invalid input. Please enter a valid number.");
-            0.0 // Default value in case of error
-        }
-    }
+    input.trim().parse().unwrap_or(0.0)
 }
